@@ -58,6 +58,9 @@ public class GraphNode {
         if(right==null){
             System.out.println(key+" right "+toPut.key);
             right = toPut;
+            //este elemento vai ser parent do toPut
+            //logo temos que verificar se ele já tinha parent
+            //e tratar o parent de acordo
             if(toPut.parent!=null){
                 toPut.putRight(toPut.parent);
             }
