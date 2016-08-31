@@ -83,11 +83,12 @@ public class TaskScheduler {
                     } else {
                         //verificamos também se esta dependência ainda não existe
                         if (!leftIn.hasPrecedence(parts[1])) {
-                            //adicionamos como dependência
-                            //ao da esquerda
+                            //se o da esquerda é novo
+                            //podemos colocar para a direita do "da direita"
+                            //uma vez que depende dele
                             if(leftIsNew)
                                 rightIn.putRight(leftIn);
-                            else
+                            else //caso contrario ao da esquerda para a esquerda
                                 leftIn.putLeft(rightIn);
                         }
                     }
