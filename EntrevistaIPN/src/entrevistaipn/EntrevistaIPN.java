@@ -44,8 +44,9 @@ public class EntrevistaIPN {
         String test5 = "A=>H\nA=>D\nD=>E\nH=>E\nB=>C\nC=>F\nC=>D\n";
         
         String test6 = "F=>D\nD=>X\nB=>C\nA=>B\nF=>B\nJ=>K\nI=>J\nL=>J\nR=>K\nM=>D\nN=>F\nR=>C";
-        String test7 = "F=>D\nD=>X\nB=>C\nA=>B\nF=>B\nJ=>K\nI=>J\nL=>J\nR=>K\nM=>D\nN=>F\nR=>B";
+        String test7 = "F=>D\nD=>X\nB=>C\nA=>B\nF=>B\nJ=>K\nI=>J\nL=>J\nR=>K\nM=>D\nN=>F\nR=>M";
         String test8 = "F=>D\nD=>X\nB=>C\nA=>B\nF=>B\nJ=>K\nI=>J\nL=>J\nR=>K\nM=>D\nN=>F\nM=>C";
+        String test9 = "F=>D\nD=>X\nB=>C\nA=>B\nF=>B\nJ=>K\nI=>J\nL=>J\nR=>K\nM=>D\nN=>F\nM=>K";
        
             testTestCase(test);
 //            testTestCase(test1); //circular error
@@ -56,6 +57,7 @@ public class EntrevistaIPN {
             testTestCase(test6);
             testTestCase(test7);
             testTestCase(test8);
+            testTestCase(test9);
        
     }
     
