@@ -28,8 +28,20 @@ public class EntrevistaIPN {
 "B => C\nC => F\nD => A\nE => B\n" +
 "  F =>";
         
+        String test1 = "A =>\n" +
+"B => C\nC => F\nD => A\nE =>\n" +
+"F => B";
+        
+        String test2 = "H=>A\nA=>D\nD=>E\nB=>C\nC=>F\nC=>D";
+        String test3 = "H=>A\nA=>D\nD=>E\nB=>C\nC=>F\nC=>D\nH=>E";
+        String test4 = "H=>A\nA=>D\nD=>E\nH=>E\nB=>C\nC=>F\nC=>D\nE=>H";
         try {
-            t.orderTasks(test);
+            System.out.println(t.orderTasks(test));
+            //System.out.println(t.orderTasks(test1)); //circular error
+            System.out.println(t.orderTasks(test2));
+            System.out.println(t.orderTasks(test3));
+            //System.out.println(t.orderTasks(test4)); //circular error
+            
         } catch (DependsOnItSelfException ex) {
             Logger.getLogger(EntrevistaIPN.class.getName()).log(Level.SEVERE, null, ex);
         } catch (CircularDependencyException ex) {

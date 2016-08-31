@@ -16,7 +16,7 @@ public class TaskScheduler {
     //hashmap to have a relative fast way of tracking nodes already inserted
     private HashMap<String, GraphNode> nodes;
 
-    private GraphNode linkToLast = null;
+    //private GraphNode linkToLast = null;
 
     public TaskScheduler() {
         nodes = new HashMap<>();
@@ -24,11 +24,13 @@ public class TaskScheduler {
     }
 
     public String orderTasks(String tasksin) throws DependsOnItSelfException, CircularDependencyException {
+        
+        
 
-        String[] lines = tasksin.replace(" ", "").split("\n");
+        String[] lines = tasksin.replaceAll(" ", "").split("\n");
         for (int i = 0; i < lines.length; i++) {
 
-            System.out.println("StartParse l:" + i + " c:" + lines[i]);
+            System.out.println("in-"+lines[i]);
             String[] parts = lines[i].split("=>");
 
             GraphNode leftIn;
@@ -65,23 +67,38 @@ public class TaskScheduler {
                     if (leftIn.hasAscendence(parts[1])) {
                         throw (new CircularDependencyException("Tasks have circular dependencies."));
                     } else {
-                        leftIn.putLeft(rightIn);
+//                        if(rightIn.parent!=null){
+//                            GraphNode temp = rightIn;
+//                            while(temp.parent!=null){
+//                                rightIn.putRight(temp.parent);
+//                                temp=temp.parent;
+//                            }
+//                        }
+                        if (!leftIn.hasPrecedence(parts[1])) {
+                            leftIn.putLeft(rightIn);
+                        }
                     }
                 }
 
             }
         }
+        StringBuilder sb = new StringBuilder(nodes.size());
+        System.out.println("Debug print solution:");
         for (GraphNode value : nodes.values()) {
+            //System.out.println(value.toString());
             if(value.printed)
                 continue;
             while (value.parent!=null){
+                //System.out.println("looking "+value.key+" "+value.parent.key);
                 value = value.parent;
             }
-            System.out.print("|");
-            value.printLeft();
+            value.printLeft(sb);
+            System.out.print("\n");
         }
-        String tasksout = "";
-        return tasksout;
+        System.out.println("Debug print solution END");
+        nodes.clear();
+        
+        return sb.toString();
     }
 
 }

@@ -12,9 +12,9 @@ package entrevistaipn.schedule;
 public class GraphNode {
     
     public boolean printed = false;
-    public GraphNode parent;
-    public GraphNode left;
-    public GraphNode right;
+    public GraphNode parent = null;
+    public GraphNode left = null;
+    public GraphNode right = null;
     
     public String key;
     
@@ -23,33 +23,44 @@ public class GraphNode {
     }
     
     public boolean hasPrecedence(String oKey){
-        if(key.equals(oKey)){
-            return true;
-        }
-        if(left!=null){
-            return left.hasPrecedence(oKey);
-        }else {
-            return false;
-        }
-    }
-    
-    public boolean hasAscendence(String oKey){
+        //System.out.println("check prec: "+key+" - "+oKey);
         if(key.equals(oKey)){
             return true;
         }
         boolean ret = false;
         if(left!=null){
-            ret= ret||left.hasAscendence(oKey);
+            ret= ret||left.hasPrecedence(oKey);
         }
         if(parent!=null){
-            ret= ret||parent.hasAscendence(oKey);
+            if(parent.left==null||!parent.left.key.equals(this.key))
+                ret= ret||parent.hasPrecedence(oKey);
+        }
+        return ret;
+    }
+    
+    public boolean hasAscendence(String oKey){
+        //System.out.println("check acend: "+key+" - "+oKey);
+        if(key.equals(oKey)){
+            return true;
+        }
+        boolean ret = false;
+        if(right!=null){
+            ret= ret||right.hasAscendence(oKey);
+        }
+        if(parent!=null){
+            if(parent.right==null||!parent.right.key.equals(this.key))
+                ret= ret||parent.hasAscendence(oKey);
         }
         return ret;
     }
     
     public void putRight(GraphNode toPut){
         if(right==null){
+            System.out.println(key+" right "+toPut.key);
             right = toPut;
+            if(toPut.parent!=null){
+                toPut.putRight(toPut.parent);
+            }
             toPut.parent = this;
         }else {
             right.putRight(toPut);
@@ -58,19 +69,33 @@ public class GraphNode {
     
     public void putLeft(GraphNode toPut){
         if(left==null){
+            System.out.println(key+" left "+toPut.key);
             left = toPut;
+            if(toPut.parent!=null){
+                toPut.putRight(toPut.parent);
+            }
             toPut.parent = this;
         }else {
-            left.putRight(toPut);
+            left.putLeft(toPut);
         }
     }
     
-    public void printLeft(){
-        this.printed = true;
-        if(left!=null)
-            left.printLeft();
-        System.out.print(key);
-        if(right!=null)
-            right.printLeft();
+    public void printLeft(StringBuilder sb){
+        if(!printed){
+            this.printed = true;
+            if(left!=null)
+                left.printLeft(sb);
+            System.out.print(key);
+            sb.append(key);
+            if(right!=null)
+                right.printLeft(sb);
+        }
     }
+
+    @Override
+    public String toString() {
+        return "GraphNode{" + "printed=" + printed + " key=" + key + '}';
+    }
+    
+    
 }
