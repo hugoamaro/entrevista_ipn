@@ -25,15 +25,19 @@ public class TaskScheduler {
 
     public String orderTasks(String tasksin) throws DependsOnItSelfException, CircularDependencyException {
         
+        nodes.clear();
         
 
         String[] lines = tasksin.replaceAll(" ", "").split("\n");
         //Para cada linha dos dados
         for (int i = 0; i < lines.length; i++) {
 
-            System.out.println("in-"+lines[i]);
+            //System.out.println("in-"+lines[i]);
             //separamos em elemento da esquerda e direita
             String[] parts = lines[i].split("=>");
+            
+            if(parts.length==0)
+                continue;
 
             GraphNode leftIn;
             boolean leftIsNew = true;
@@ -54,7 +58,7 @@ public class TaskScheduler {
 
                 //testamos se são o mesmo cedo
                 if (parts[0].equals(parts[1])) {
-                    throw (new DependsOnItSelfException("Task and its predecessor were the same."));
+                    throw (new DependsOnItSelfException("Task and its predecessor were the same on "+lines[i]+"."));
                 }
 
                 GraphNode rightIn;
@@ -75,13 +79,16 @@ public class TaskScheduler {
                     rightIn = nodes.get(parts[1]);
                     //verificamos se o elemento da esquerda é dependência do da direita
                     if (leftIn.hasAscendence(parts[1])) {
-                        throw (new CircularDependencyException("Tasks have circular dependencies."));
+                        throw (new CircularDependencyException("Tasks have circular dependencies on "+lines[i]+"."));
                     } else {
                         //verificamos também se esta dependência ainda não existe
                         if (!leftIn.hasPrecedence(parts[1])) {
                             //adicionamos como dependência
                             //ao da esquerda
-                            leftIn.putLeft(rightIn);
+                            if(leftIsNew)
+                                rightIn.putRight(leftIn);
+                            else
+                                leftIn.putLeft(rightIn);
                         }
                     }
                 }
@@ -89,7 +96,7 @@ public class TaskScheduler {
             }
         }
         StringBuilder sb = new StringBuilder(nodes.size());
-        System.out.println("Debug print solution:");
+        //System.out.println("Debug print solution:");
         for (GraphNode value : nodes.values()) {
             //System.out.println(value.toString());
             //marcar os elementos com printed permite percorrer
@@ -104,10 +111,9 @@ public class TaskScheduler {
             //esta função percorre a àrvore do leftmost até ao rightmost (Depth first)
             //para imprimir as dependência na sequência correcta
             value.printLeft(sb);
-            System.out.print("\n");
+            //System.out.print("\n");
         }
-        System.out.println("Debug print solution END");
-        nodes.clear();
+        //System.out.println("Debug print solution END");
         
         return sb.toString();
     }
