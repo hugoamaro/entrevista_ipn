@@ -35,12 +35,14 @@ public class EntrevistaIPN {
         String test2 = "H=>A\nA=>D\nD=>E\nB=>C\nC=>F\nC=>D";
         String test3 = "H=>A\nA=>D\nD=>E\nB=>C\nC=>F\nC=>D\nH=>E";
         String test4 = "H=>A\nA=>D\nD=>E\nH=>E\nB=>C\nC=>F\nC=>D\nE=>H";
+        String test5 = "A=>H\nA=>D\nD=>E\nH=>E\nB=>C\nC=>F\nC=>D\n";
         try {
             System.out.println(t.orderTasks(test));
             //System.out.println(t.orderTasks(test1)); //circular error
             System.out.println(t.orderTasks(test2));
             System.out.println(t.orderTasks(test3));
             //System.out.println(t.orderTasks(test4)); //circular error
+            System.out.println(t.orderTasks(test5));
             
         } catch (DependsOnItSelfException ex) {
             Logger.getLogger(EntrevistaIPN.class.getName()).log(Level.SEVERE, null, ex);

@@ -62,7 +62,10 @@ public class GraphNode {
             //logo temos que verificar se ele já tinha parent
             //e tratar o parent de acordo
             if(toPut.parent!=null){
-                toPut.putRight(toPut.parent);
+                if(parent.right!=null&&parent.right.key.equals(this.key))
+                    toPut.putLeft(toPut.parent);
+                else
+                    toPut.putRight(toPut.parent);
             }
             toPut.parent = this;
         }else {
@@ -75,7 +78,10 @@ public class GraphNode {
             System.out.println(key+" left "+toPut.key);
             left = toPut;
             if(toPut.parent!=null){
-                toPut.putRight(toPut.parent);
+                if(parent.right!=null&&parent.right.key.equals(this.key))
+                    toPut.putLeft(toPut.parent);
+                else
+                    toPut.putRight(toPut.parent);
             }
             toPut.parent = this;
         }else {
